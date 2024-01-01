@@ -234,15 +234,11 @@ CREATE TABLE `quotecons` (
   `qc_state` varchar(20) NOT NULL,
   `qc_city` varchar(20) NOT NULL,
   `qc_distance` double NOT NULL,
-  `qc_total` double NOT NULL,
   `qc_AID` int(15) NOT NULL,
   `qc_issuedate` date NOT NULL,
   `qc_expirydate` date NOT NULL,
   `qc_grandtotal` double NOT NULL,
-  `qc_EIID` int(15) NOT NULL,
-  `qc_ELID` int(15) NOT NULL,
   `qc_OCID` int(15) NOT NULL,
-  `qc_qID` int(15) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
