@@ -1,0 +1,199 @@
+<!-- manageorder.php -->
+<?php
+// Include the common header file
+include 'headermain.php';
+
+// Include the database connection
+include 'connection.php';
+
+// Include the PHP code for order management
+include 'manageorderprocess.php';
+
+// Handle form submissions
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (isset($_POST['add_product'])) {
+        $orderId = $_POST['order_id'];
+        $productId = $_POST['product_id'];
+        $quantity = $_POST['quantity'];
+        addProductToOrder($orderId, $productId, $quantity);
+    } elseif (isset($_POST['update_quantity'])) {
+        $orderProductId = $_POST['order_product_id'];
+        $newQuantity = $_POST['new_quantity'];
+        updateProductQuantity($orderProductId, $newQuantity);
+    } elseif (isset($_POST['delete_product'])) {
+        $orderProductId = $_POST['order_product_id'];
+        deleteProductFromOrder($orderProductId);
+    }
+}
+
+// Function to get order details with associated products
+function getOrderDetails($orderId) {
+    global $con;
+
+    $query = "SELECT tb_order.o_id as order_id, tb_customer.c_name as customer_name, o_date, 
+                     tb_product.p_id as product_id, tb_product.p_name as product_name, tb_product.p_price, op_quantity, tb_orderproduct.op_id as order_product_id,
+                     (tb_product.p_price * tb_orderproduct.op_quantity) as total_price
+              FROM tb_order
+              JOIN tb_customer ON tb_order.o_cid = tb_customer.c_id
+              JOIN tb_orderproduct ON tb_order.o_id = tb_orderproduct.op_orderid
+              JOIN tb_product ON tb_orderproduct.op_productid = tb_product.p_id
+              WHERE tb_order.o_id = $orderId";
+
+    $result = $con->query($query);
+
+    $orderDetails = array();
+    while ($row = $result->fetch_assoc()) {
+        $orderDetails[] = $row;
+    }
+
+    return $orderDetails;
+}
+
+// Function to get all product IDs for the dropdown
+function getAllProductIDs() {
+    global $con;
+
+    $query = "SELECT p_id FROM tb_product";
+    $result = $con->query($query);
+
+    $productIDs = array();
+    while ($row = $result->fetch_assoc()) {
+        $productIDs[] = $row['p_id'];
+    }
+
+    return $productIDs;
+}
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Include your existing head content here -->
+    <?php include 'headermain.php'; ?>
+    <script>
+        // JavaScript function to confirm before form submission
+        function confirmAction() {
+            return confirm("Are you sure you want to perform this action?");
+        }
+    </script>
+    
+</head>
+
+<body>
+    <div class="container mt-4">
+        <h1>Order Management System</h1>
+
+        <h2>Order Details</h2>
+
+        <form method="post">
+            <div class="mb-3">
+                <label for="order_id" class="form-label">Order ID:</label>
+                <select class="form-select" name="order_id" required>
+                    <?php
+                    $orderIdsQuery = "SELECT o_id FROM tb_order";
+                    $result = $con->query($orderIdsQuery);
+                    while ($row = $result->fetch_assoc()) {
+                        echo "<option value='{$row['o_id']}'>{$row['o_id']}</option>";
+                    }
+                    ?>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Show Order Details</button>
+        </form>
+
+        <?php
+        // Display order details table here
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['order_id'])) {
+            $orderId = $_POST['order_id'];
+            $orderDetails = getOrderDetails($orderId);
+
+            if (!empty($orderDetails)) {
+                echo "<h3>Order #$orderId Details</h3>";
+                echo "<p>Customer: {$orderDetails[0]['customer_name']}</p>";
+                echo "<p>Order Date: {$orderDetails[0]['o_date']}</p>";
+
+                echo "<table class='table table-bordered'>
+                        <tr>
+                            <th>Product ID</th>
+                            <th>Product Name</th>
+                            <th>Quantity</th>
+                            <th>Price</th>
+                            <th>Total Price</th>
+                            <th>Action</th>
+                        </tr>";
+
+                $grandTotal = 0;
+
+                foreach ($orderDetails as $item) {
+                    echo "<tr>
+                            <td>{$item['product_id']}</td>
+                            <td>{$item['product_name']}</td>
+                            <td>{$item['op_quantity']}</td>
+                            <td>{$item['p_price']}</td>
+                            <td>{$item['total_price']}</td>
+                            <td>
+                                <form class='row g-2' method='post'>
+                                    <div class='col-md-4'>
+                                        <input type='hidden' name='order_product_id' value='{$item['order_product_id']}'>
+                                        <label for='new_quantity' class='visually-hidden'>New Quantity:</label>
+                                        <input type='number' class='form-control' name='new_quantity' required>
+                                    </div>
+                                    <div class='col-md-4'>
+                                        <button type='submit' class='btn btn-primary' name='update_quantity' onclick='return confirmAction();'>Update Quantity</button>
+                                    </div>
+                                    <div class='col-md-4'>
+                                        <button type='submit' class='btn btn-danger' name='delete_product' onclick='return confirmAction();'>Delete Product</button>
+                                    </div>
+                                </form>
+                            </td>
+                          </tr>";
+
+                    $grandTotal += $item['total_price'];
+                }
+
+                echo "</table>";
+
+                // Dropdown for adding a new product
+                echo "<form method='post' class='mt-3'>
+                        <input type='hidden' name='order_id' value='$orderId'>
+                        <div class='row'>
+                            <div class='col-md-3'>
+                                <label for='product_id' class='form-label'>Product ID:</label>
+                                <select class='form-select' name='product_id' required>
+                                    <option value='' selected disabled>Select Product ID</option>";
+
+                $productIDs = getAllProductIDs();
+                foreach ($productIDs as $productID) {
+                    echo "<option value='$productID'>$productID</option>";
+                }
+
+                echo "          </select>
+                            </div>
+                            <div class='col-md-3'>
+                                <label for='quantity' class='form-label'>Quantity:</label>
+                                <input type='number' class='form-control' name='quantity' required>
+                            </div>
+                            <div class='col-md-3'>
+                                <button type='submit' class='btn btn-success' name='add_product' onclick='return confirmAction();'>Add Product</button>
+                            </div>
+                        </div>
+                    </form>";
+
+                // Display the total price for the order
+                echo "<p class='mt-3'>Total Price for Order #$orderId: $grandTotal</p>";
+            } else {
+                echo "<p>No order found with ID #$orderId.</p>";
+            }
+        }
+        ?>
+    </div>
+
+    <!-- Include your existing body content here -->
+    <!-- ... -->
+
+    <!-- Include your existing script files here -->
+    <!-- ... -->
+</body>
+
+</html>
