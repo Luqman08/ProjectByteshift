@@ -104,8 +104,8 @@ include('dbcon.php');
                         }
 
                         $query = "SELECT tb_order.*, tb_customer.c_name FROM tb_order 
-                                        LEFT JOIN tb_customer ON tb_order.o_cid = tb_customer.c_id
-                                        ORDER BY o_cid $sort_option";
+                                LEFT JOIN tb_customer ON tb_order.o_cid = tb_customer.c_id
+                                ORDER BY tb_customer.c_name $sort_option";
                         $query_run = mysqli_query($con, $query);
 
                         if ($query_run) {
