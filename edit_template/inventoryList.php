@@ -59,9 +59,7 @@ include 'header.php';
                     <a href="createcustomer.php" class="dropdown-item">Create Customer</a>
                     <a href="customerinfo.php" class="dropdown-item">Customer Information</a>
                     <a href="createorderads.php" class="dropdown-item">Create Order</a>
-                    <a href="statuspage.php" class="dropdown-item">Delivery Page</a>
-                    <a href="paymentpage.php" class="dropdown-item">Payment Page</a>
-                    <a href="paymentstatus.php" class="dropdown-item">Payment Status</a>
+                    <a href="statuspage.php" class="dropdown-item">Status Page</a>
                 </div>
             </div>
             <div class="nav-item dropdown">
@@ -99,10 +97,11 @@ include 'header.php';
                         <tr class="text-white">
                             <th scope="col">ID</th>
                             <th scope="col">Item Name</th>
-                            <th scope="col">Unit Price</th>
+                            <th scope="col">Cost Price</th>
                             <th scope="col">Quantity</th>
                             <th scope="col">Minimum Stock Level</th>
                             <th scope="col">Markup Percentage</th>
+                            <th scope="col">Sale Price</th>
                             <th scope="col">Action</th>
                         </tr>
                     </thead>
@@ -116,6 +115,7 @@ include 'header.php';
                             echo "<td>" . $row['p_quantity'] . "</td>";
                             echo "<td>" . $row['p_minimum'] . "</td>";
                             echo "<td>" . $row['p_markup'] . "</td>";
+                            echo "<td>" . $row['p_price_after_markup'] . "</td>";
                             echo "<td>";
                             $deleteUrl = 'inventoryDelete.php?id=' . $row['p_id'];
 

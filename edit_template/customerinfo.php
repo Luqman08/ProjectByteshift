@@ -59,9 +59,7 @@ include 'header.php';
                     <a href="createcustomer.php" class="dropdown-item">Create Customer</a>
                     <a href="customerinfo.php" class="dropdown-item">Customer Information</a>
                     <a href="createorderads.php" class="dropdown-item">Create Order</a>
-                    <a href="statuspage.php" class="dropdown-item">Delivery Page</a>
-                    <a href="paymentpage.php" class="dropdown-item">Payment Page</a>
-                    <a href="paymentstatus.php" class="dropdown-item">Payment Status</a>
+                    <a href="statuspage.php" class="dropdown-item">Status Page</a>
                 </div>
             </div>
             <div class="nav-item dropdown">
@@ -109,6 +107,7 @@ include 'header.php';
                                     <th scope="col">Name</th>
                                     <th scope="col">Email</th>
                                     <th scope="col">Phone</th>
+                                    <th scope="col">Action</th>
                                     <!-- Add more columns if needed -->
                                 </tr>
                             </thead>
@@ -136,8 +135,10 @@ include 'header.php';
                                         <td>
                                             <?php echo $row['c_phone']; ?>
                                         </td>
+                                        <td>
+                                            <?php echo "<a href='customerinfoUpdate.php?id=" . $row['c_id'] . "' class='btn btn-warning m-2'>Modify</a> &nbsp"; ?>
+                                        </td>
 
-                                        <!-- Add more columns if needed -->
                                     </tr>
                                 <?php
                                 }

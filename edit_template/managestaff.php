@@ -1,4 +1,5 @@
-<?php include 'header.php';
+<?php
+include 'header.php';
 //include('mysession.php');
 if (!session_id()) {
     session_start();
@@ -11,7 +12,7 @@ $result = mysqli_query($con, $sql);
 
 mysqli_close($con);
 
-
+// Display Result
 ?>
 
 <div class="sidebar pe-4 pb-3">
@@ -47,11 +48,8 @@ mysqli_close($con);
     </nav>
 </div>
 
-
-
-<!-- option -->
-
 <body>
+
     <div class="container-fluid pt-4 px-4">
         <div class="bg-secondary text-center rounded p-4">
             <div class="d-flex align-items-center justify-content-between mb-4">
@@ -60,8 +58,7 @@ mysqli_close($con);
             <div class="table-responsive">
                 <table class="table text-start align-middle table-bordered table-hover mb-0">
                     <thead>
-                        <tr class="text-white">
-
+                        <tr>
                             <th scope="col">ID</th>
                             <th scope="col">Full Name</th>
                             <th scope="col">Phone Number</th>
@@ -83,8 +80,10 @@ mysqli_close($con);
                             echo "<td>" . $row['u_type'] . "</td>";
                             //echo "<td>********</td>"; // Passwords are usually not displayed for security reasons
                             echo "<td>";
+                            echo "<a href='view_staff.php?id=" . $row['u_id'] . "' class='btn btn-info btn-sm'>View</a> ";
                             echo "<a href='editstaffpage.php?id=" . $row['u_id'] . "' class='btn btn-warning btn-sm'>Edit</a> ";
-                            echo "<button class='btn btn-danger btn-sm' onclick='confirmDelete(" . $row['u_id'] . ")'>Delete</button>";
+                            // Add a confirmation dialog for delete action
+                            echo "<a href='deletestaff.php?id=" . $row['u_id'] . "' class='btn btn-danger btn-sm' onclick='return confirmDelete()'>Delete</a>";
                             echo "</td>";
                             echo "</tr>";
                         }
@@ -93,8 +92,8 @@ mysqli_close($con);
                 </table>
             </div>
         </div>
+    </div>
 </body>
-<!-- Sale & Revenue End -->
 
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -109,13 +108,8 @@ mysqli_close($con);
 <!-- Template Javascript -->
 <script src="js/main.js"></script>
 <script>
-    // JavaScript function to display confirmation dialog and redirect to deletestaff.php
-    function confirmDelete(userId) {
-        if (confirm("Are you sure you want to delete this staff member?")) {
-            // If user clicks 'OK', redirect to deletestaff.php with the user ID
-            window.location.href = "deletestaff.php?id=" + userId;
-        }
-        // If user clicks 'Cancel', do nothing
+    function confirmDelete() {
+        return confirm("Are you sure you want to delete this record?");
     }
 </script>
 

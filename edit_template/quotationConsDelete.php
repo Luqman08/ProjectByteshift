@@ -1,41 +1,23 @@
 <?php
-include('mysession.php');
-if (!session_id()) {
-    session_start();
-}
+include('dbcon.php');
 
-// Get booking id from url
 if (isset($_GET['id'])) {
-    $fID = $_GET['id'];
+    $qc_OCID = $_GET['id'];
 
-    include('dbcon.php');
+    // Perform the deletion
+    $deleteQuery = "DELETE FROM quotecons WHERE qc_OCID = '$qc_OCID'";
+    $deleteResult = mysqli_query($con, $deleteQuery);
 
-    // CRUD Delete using prepared statement
-    $sql = "DELETE FROM quotecons WHERE qc_OCID = ?";
-    $stmt = mysqli_prepare($con, $sql);
+    if ($deleteResult) {
+        echo "Quotation deleted successfully.";
 
-    if ($stmt) {
-        mysqli_stmt_bind_param($stmt, "i", $fID); // "i" represents integer type
-
-        if (mysqli_stmt_execute($stmt)) {
-            mysqli_stmt_close($stmt);
-            mysqli_close($con);
-
-            // Redirect
-            header('Location:quotationlistCons.php');
-            exit();
-        } else {
-            // Handle execution error
-            echo "Error executing statement: " . mysqli_error($con);
-        }
+        // Redirect
+        header('Location:quotationlistCons.php');
     } else {
-        // Handle prepare error
-        echo "Error preparing statement: " . mysqli_error($con);
+        echo "Error deleting quotation: " . mysqli_error($con);
     }
-
-    // If you reach here, something went wrong
-    mysqli_close($con);
 } else {
-    echo "Error: Order Construction ID not provided.";
-    exit();
+    echo "Invalid request. Please provide a valid quotation ID.";
 }
+
+mysqli_close($con);

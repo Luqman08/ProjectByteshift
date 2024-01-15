@@ -1,11 +1,3 @@
-<script>
-    $(document).ready(function() {
-        $('#qc_OCID').DataTable();
-    });
-</script>
-
-
-
 <?php
 include('mysession.php');
 if (!session_id()) {
@@ -15,16 +7,13 @@ if (!session_id()) {
 include 'header.php';
 include('dbcon.php');
 
-//CRUD: Retrieve booking operation
-$sql = "SELECT * FROM quotecons";
-
-$result = mysqli_query($con, $sql);
-if (!$result) {
-    die("Query failed: " . mysqli_error($con));
-}
 ?>
 <!-- Spinner End -->
-
+<script>
+    $(document).ready(function() {
+        $('#qc_OCID').DataTable();
+    });
+</script>
 <!-- Sidebar Start -->
 <div class="sidebar pe-4 pb-3">
     <nav class="navbar bg-secondary navbar-dark">
@@ -41,9 +30,7 @@ if (!$result) {
                     <a href="createcustomer.php" class="dropdown-item">Create Customer</a>
                     <a href="customerinfo.php" class="dropdown-item">Customer Information</a>
                     <a href="createorderads.php" class="dropdown-item">Create Order</a>
-                    <a href="statuspage.php" class="dropdown-item">Delivery Page</a>
-                    <a href="paymentpage.php" class="dropdown-item">Payment Page</a>
-                    <a href="paymentstatus.php" class="dropdown-item">Payment Status</a>
+                    <a href="statuspage.php" class="dropdown-item">Status Page</a>
                 </div>
             </div>
             <div class="nav-item dropdown">
@@ -89,7 +76,7 @@ if (!$result) {
                 </div>
             </form>
             <div class="table-responsive">
-                <table id="qc_OCID" class="table text-start align-middle table-bordered table-hover mb-0">
+                <table class="table text-start align-middle table-bordered table-hover mb-0">
                     <thead>
                         <tr class="text-white">
                             <th scope="col">Order Construction ID</th>
@@ -131,8 +118,7 @@ if (!$result) {
                                     $deleteUrl = 'quotationConsDelete.php?id=' . $qc_OCID;
                                     echo "<a href='printQuotationCons.php?id=" . $qc_OCID . "' class='btn btn-info m-2'> PDF Quotation </a> &nbsp";
                                     echo "<a href='printInvoiceCons.php?id=" . $qc_OCID . "' class='btn btn-info m-2'> PDF Invoice   </a> &nbsp";
-                                    echo "<a href='quotationConsDelete.php?id=$qc_OCID' class='btn btn-primary m-2' onclick='confirmDelete(\"$qc_OCID\")'>Delete</a>";
-
+                                    echo "<a href='quotationConsDelete.php?id=" . $qc_OCID . "' class='btn btn-primary m-2' onclick='confirmDelete(\"$deleteUrl\")'>Delete</a>&nbsp";
 
 
                                     // Mark this order construction ID as displayed
@@ -150,54 +136,43 @@ if (!$result) {
                 </table>
             </div>
         </div>
+        <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+
     </div>
-</body>
-<!-- Quotation End -->
+
+    <!-- Quotation End -->
+
+    <!-- Back to Top -->
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="lib/chart/chart.min.js"></script>
+    <script src="lib/easing/easing.min.js"></script>
+    <script src="lib/waypoints/waypoints.min.js"></script>
+    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
+    <script src="lib/tempusdominus/js/moment.min.js"></script>
+    <script src="lib/tempusdominus/js/moment-timezone.min.js"></script>
+    <script src="lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
 
-
-
-
-<!-- Content End -->
-
-
-<!-- Back to Top -->
-
-
-<!-- JavaScript Libraries -->
-<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="lib/chart/chart.min.js"></script>
-<script src="lib/easing/easing.min.js"></script>
-<script src="lib/waypoints/waypoints.min.js"></script>
-<script src="lib/owlcarousel/owl.carousel.min.js"></script>
-<script src="lib/tempusdominus/js/moment.min.js"></script>
-<script src="lib/tempusdominus/js/moment-timezone.min.js"></script>
-<script src="lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
-<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-
-
-<!-- Template Javascript -->
-<script src="js/main.js"></script>
-<?php
-mysqli_close($con);
-?>
-<script>
-    $(document).ready(function() {
-        $('#qc_OCID').DataTable();
-    });
-
-    function confirmDelete(url) {
-        console.log("Delete URL:", url); // Log the URL for debugging
-        if (confirm("Reminder: Download first the quotation! Are you sure you want to delete this quotation?")) {
-            window.location.href = url;
-        } else {
-            // Prevent the default action (following the link)
-            event.preventDefault();
+    <!-- Template Javascript -->
+    <script src="js/main.js"></script>
+    <?php
+    mysqli_close($con);
+    ?>
+    <script>
+        function confirmDelete(url) {
+            if (confirm("Reminder: Download first the quotation! Are you sure you want to delete this quotation?")) {
+                window.location.href = url;
+            } else {
+                // Prevent the default action (following the link)
+                event.preventDefault();
+            }
         }
-    }
-</script>
+    </script>
 
+</body>
 <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
 
 

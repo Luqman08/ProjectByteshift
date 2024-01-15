@@ -1,13 +1,5 @@
 <?php
-
-include('mysession.php');
-if (!session_id()) {
-
-  session_start();
-
-}
-
-include 'headercust.php'; 
+//include 'headercust.php'; 
 include('mysession.php');
 if (!session_id()) {
     session_start();
@@ -28,4 +20,3 @@ mysqli_close($con);
 
 // Redirect
 header('location: managestaff.php');
-?>

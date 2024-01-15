@@ -3,7 +3,7 @@ include('mysession.php');
 if (!session_id()) {
     session_start();
 }
-include('dbcon.php');
+include('connection.php');
 
 //retreive data from form 
 $fID = $_POST['fID'];
