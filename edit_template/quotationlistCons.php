@@ -89,7 +89,7 @@ if (!$result) {
                 </div>
             </form>
             <div class="table-responsive">
-                <table class="table text-start align-middle table-bordered table-hover mb-0">
+                <table id="qc_OCID" class="table text-start align-middle table-bordered table-hover mb-0">
                     <thead>
                         <tr class="text-white">
                             <th scope="col">Order Construction ID</th>
@@ -131,7 +131,9 @@ if (!$result) {
                                     $deleteUrl = 'quotationConsDelete.php?id=' . $qc_OCID;
                                     echo "<a href='printQuotationCons.php?id=" . $qc_OCID . "' class='btn btn-info m-2'> PDF Quotation </a> &nbsp";
                                     echo "<a href='printInvoiceCons.php?id=" . $qc_OCID . "' class='btn btn-info m-2'> PDF Invoice   </a> &nbsp";
-                                    echo "<a href='quotationConsDelete.php?id=" . $qc_OCID . "' class='btn btn-primary m-2' onclick='confirmDelete(\"" . $qc_OCID . "\")'>Delete</a>";
+                                    echo "<a href='quotationConsDelete.php?id=$qc_OCID' class='btn btn-primary m-2' onclick='confirmDelete(\"$qc_OCID\")'>Delete</a>";
+
+
 
                                     // Mark this order construction ID as displayed
                                     $displayedOrderConstructionIDs[] = $qc_OCID;
@@ -181,7 +183,12 @@ if (!$result) {
 mysqli_close($con);
 ?>
 <script>
+    $(document).ready(function() {
+        $('#qc_OCID').DataTable();
+    });
+
     function confirmDelete(url) {
+        console.log("Delete URL:", url); // Log the URL for debugging
         if (confirm("Reminder: Download first the quotation! Are you sure you want to delete this quotation?")) {
             window.location.href = url;
         } else {

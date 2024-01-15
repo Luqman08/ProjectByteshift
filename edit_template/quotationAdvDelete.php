@@ -4,32 +4,26 @@ if (!session_id()) {
     session_start();
 }
 
-// Get Order Construction ID from the URL
+// Get booking id from url
 if (isset($_GET['id'])) {
-    $qc_OCID = $_GET['id'];
-} else {
-    echo "Error: Order Construction ID not provided.";
-    exit();
+    $fID = $_GET['id'];
 }
 
 include('dbcon.php');
 
-// Validate and sanitize the input
-$qc_OCID = mysqli_real_escape_string($con, $qc_OCID);
-
 // CRUD Delete using prepared statement
-$sql = "DELETE FROM quotecons WHERE qc_OCID = ?";
+$sql = "DELETE FROM tb_order WHERE o_id = ?";
 $stmt = mysqli_prepare($con, $sql);
 
 if ($stmt) {
-    mysqli_stmt_bind_param($stmt, "s", $qc_OCID);
+    mysqli_stmt_bind_param($stmt, "i", $fID); // "i" represents integer type
 
     if (mysqli_stmt_execute($stmt)) {
         mysqli_stmt_close($stmt);
         mysqli_close($con);
 
         // Redirect
-        header('Location:quotationlistCons.php');
+        header('Location:quotationlistAdv.php');
         exit();
     } else {
         // Handle execution error
