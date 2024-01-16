@@ -2,6 +2,13 @@
 // Connect to DB
 include("dbcon.php");
 
+include('mysession.php');
+if (!session_id()) {
+
+    session_start();
+}
+
+
 // Retrieve data from registration form
 $fID = $_POST['fID'];
 $fname = $_POST['fname'];

@@ -10,9 +10,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $fpwd = mysqli_real_escape_string($con, $_POST['fpwd']);
     $userType = mysqli_real_escape_string($con, $_POST['userType']);
 
-    // Add debugging output
-    echo "User Type: $userType<br>";
-
     // SQL retrieve statement
     $sql = "SELECT * FROM tb_user WHERE u_id='$u_id' AND u_pwd='$fpwd' AND u_type='$userType'";
 
@@ -27,7 +24,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     function redirectUser($userType)
     {
         if ($userType == "1") {
-            header('Location: staffpage.php'); // Redirect to the staff page
+            header('Location: staffpage/manageorder.php'); // Redirect to the staff page
         } else if ($userType == "2") {
             header('Location: report.php'); // Redirect to the admin page
         } else {
@@ -46,7 +43,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Set session variables
         $_SESSION['u_id'] = session_id();
-        $_SESSION['suic'] = $fname;
+        $_SESSION['suic'] = $row['fname']; // Assuming 'fname' is the correct field name
 
         // Regenerate session ID (optional but recommended)
         session_regenerate_id(true);
@@ -55,12 +52,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         redirectUser($userType);
     } else {
         // Data not available/exist
-        // Add script to let the user know either username or password is wrong
-
-        // Add debugging output
-        echo "Login failed<br>";
-
-        header('Location: login.php');
+        // Redirect to the login page with an alert
+        echo '<script>
+            alert("Invalid username or password. Please try again.");
+            window.location.href = "login.php";
+        </script>';
         exit();
     }
 }

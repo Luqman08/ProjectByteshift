@@ -7,7 +7,7 @@ if (!session_id()) {
 include('dbcon.php');
 
 // Retrieve staff information from the database
-$sql = "SELECT * FROM tb_user"; // Replace 'staff_table' with your actual staff table name
+$sql = "SELECT * FROM tb_user JOIN tb_type ON tb_user.u_type = tb_type.t_id"; // Replace 'staff_table' with your actual staff table name
 $result = mysqli_query($con, $sql);
 
 mysqli_close($con);
@@ -58,7 +58,7 @@ mysqli_close($con);
             <div class="table-responsive">
                 <table class="table text-start align-middle table-bordered table-hover mb-0">
                     <thead>
-                        <tr>
+                        <tr class ="text-white">
                             <th scope="col">ID</th>
                             <th scope="col">Full Name</th>
                             <th scope="col">Phone Number</th>
@@ -77,10 +77,10 @@ mysqli_close($con);
                             echo "<td>" . $row['u_phone'] . "</td>";
                             echo "<td>" . $row['u_email'] . "</td>";
                             echo "<td>" . $row['u_pwd'] . "</td>";
-                            echo "<td>" . $row['u_type'] . "</td>";
+                            echo "<td>" . $row['t_desc'] . "</td>";
                             //echo "<td>********</td>"; // Passwords are usually not displayed for security reasons
                             echo "<td>";
-                            echo "<a href='view_staff.php?id=" . $row['u_id'] . "' class='btn btn-info btn-sm'>View</a> ";
+                            //echo "<a href='view_staff.php?id=" . $row['u_id'] . "' class='btn btn-info btn-sm'>View</a> ";
                             echo "<a href='editstaffpage.php?id=" . $row['u_id'] . "' class='btn btn-warning btn-sm'>Edit</a> ";
                             // Add a confirmation dialog for delete action
                             echo "<a href='deletestaff.php?id=" . $row['u_id'] . "' class='btn btn-danger btn-sm' onclick='return confirmDelete()'>Delete</a>";

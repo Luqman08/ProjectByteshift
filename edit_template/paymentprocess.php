@@ -1,6 +1,13 @@
 <?php
 include 'dbcon.php';
 
+include('mysession.php');
+if (!session_id()) {
+
+    session_start();
+}
+
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Check if the form has already been processed
     if (!isset($_POST['payment_processed'])) {
@@ -77,7 +84,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         // Pass the alert message to the session variable
-        session_start();
+        
         $_SESSION['payment_alert'] = $alertMessage;
     }
 }

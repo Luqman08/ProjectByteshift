@@ -1,6 +1,13 @@
 <?php
 include('dbcon.php');
 
+include('mysession.php');
+if (!session_id()) {
+
+    session_start();
+}
+
+
 if (isset($_GET['id'])) {
     $qc_OCID = $_GET['id'];
 

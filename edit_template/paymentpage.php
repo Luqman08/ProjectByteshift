@@ -2,6 +2,13 @@
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
+include('mysession.php');
+if (!session_id()) {
+
+    session_start();
+}
+
+
 include 'dbcon.php';
 include 'paymentprocess.php';
 
@@ -106,7 +113,7 @@ include 'header.php';
                         </select><br>
 
                         <label for="amount">Amount:</label>
-                        <input type="text" class="form-control" name="amount" required><br>
+                        <input type="number" step="0.01" min="0" class="form-control" name="amount" required><br>
 
                         <label for="evidence">Upload Evidence (File or Picture):</label>
                         <input type="file" class="form-control bg-dark" name="evidence" accept="image/*, .pdf"><br>

@@ -59,16 +59,18 @@ include 'header.php';
                     <a href="createcustomer.php" class="dropdown-item">Create Customer</a>
                     <a href="customerinfo.php" class="dropdown-item">Customer Information</a>
                     <a href="createorderads.php" class="dropdown-item">Create Order</a>
-                    <a href="statuspage.php" class="dropdown-item">Status Page</a>
+                    <a href="statuspage.php" class="dropdown-item">Delivery Page</a>
+                    <a href="paymentpage.php" class="dropdown-item">Payment Page</a>
+                    <a href="paymentstatus.php" class="dropdown-item">Payment Status</a>
                 </div>
             </div>
             <div class="nav-item dropdown">
-                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-laptop me-2"></i>Quotation</a>
-                <div class="dropdown-menu bg-transparent border-0">
-                    <a href="quotationlistAdv.php" class="dropdown-item">Advertisement</a>
-                    <a href="quotationlistCons.php" class="dropdown-item">Construction</a>
-                </div>
-            </div>
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-laptop me-2"></i>Quotation</a>
+                        <div class="dropdown-menu bg-transparent border-0">
+                            <a href="quotationlistAdv.php" class="dropdown-item">Advertisement</a>
+                            <a href="quotationlistCons.php" class="dropdown-item">Construction</a>
+                        </div>
+                    </div>
             <a href="inventoryList.php" class="nav-item nav-link"><i class="fa fa-laptop me2"></i>Ads Inventory</a>
             <a href="managestaff.php" class="nav-item nav-link"><i class="fa fa-laptop me2"></i>Manage Staff</a>
         </div>

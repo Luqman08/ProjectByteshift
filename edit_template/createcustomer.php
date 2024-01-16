@@ -112,7 +112,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <form method="post">
                         <div class="mb-3">
                             <label for="customer_id" class="form-label">Customer ID</label>
-                            <input type="text" class="form-control" id="customer_id" name="customer_id" required>
+                            <input type="number" min="0" class="form-control" id="customer_id" name="customer_id" required>
                         </div>
                         <div class="mb-3">
                             <label for="customer_name" class="form-label">Customer Name</label>

@@ -1,6 +1,13 @@
 <?php
 include 'dbcon.php';
 
+include('mysession.php');
+if (!session_id()) {
+
+    session_start();
+}
+
+
 // Function to retrieve and display payment details
 function displayPayments($con, $orderID)
 {

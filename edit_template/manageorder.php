@@ -1,7 +1,12 @@
 <!-- manageorder.php -->
 <?php
 // Start or resume the session
-session_start();
+include('mysession.php');
+if (!session_id()) {
+
+    session_start();
+}
+
 
 // Include the common header file
 

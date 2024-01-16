@@ -42,28 +42,28 @@ include('dbcon.php');
             <form method="POST" action="inventoryAddProcess.php">
                 <h6 class="mb-4">New Item Form</h6>
                 <div class="form-floating mb-3">
-                    <input type="text" name="fID" class="form-control" id="floatingInput" placeholder="name@example.com">
+                    <input type="number" min="0" name="fID" class="form-control" id="floatingInput" placeholder="name@example.com" required>
                     <label for="floatingInput">Item ID</label>
                 </div>
                 <div class="form-floating mb-3">
-                    <input type="text" name="fname" class="form-control" id="floatingInput" placeholder="name@example.com">
+                    <input type="text" name="fname" class="form-control" id="floatingInput" placeholder="name@example.com" required>
                     <label for="floatingInput">Item Name</label>
                 </div>
 
                 <div class="form-floating mb-3">
-                    <input type="text" name="funitprice" class="form-control" id="floatingInput" placeholder="name@example.com">
+                    <input type="number" step="0.01" min="0" name="funitprice" class="form-control" id="floatingInput" placeholder="name@example.com" required>
                     <label for="floatingInput">Unit Price (RM)</label>
                 </div>
                 <div class="form-floating mb-3">
-                    <input type="text" name="fquantity" class="form-control" id="floatingInput" placeholder="name@example.com">
+                    <input type="number" min="0" name="fquantity" class="form-control" id="floatingInput" placeholder="name@example.com" required>
                     <label for="floatingInput">Quantity</label>
                 </div>
                 <div class="form-floating mb-3">
-                    <input type="text" name="fminimum" class="form-control" id="floatingInput" placeholder="name@example.com">
+                    <input type="number" min="0" name="fminimum" class="form-control" id="floatingInput" placeholder="name@example.com" required>
                     <label for="floatingInput">Set Minimum Stock Level</label>
                 </div>
                 <div class="form-floating mb-3">
-                    <input type="text" name="fmarkup" class="form-control" id="floatingInput" placeholder="name@example.com">
+                    <input type="number" step="0.01" max="1" name="fmarkup" class="form-control" id="floatingInput" placeholder="name@example.com">
                     <label for="floatingInput">Markup Percentage</label>
                 </div>
 

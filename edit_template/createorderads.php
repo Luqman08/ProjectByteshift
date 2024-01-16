@@ -8,13 +8,21 @@ include 'dbcon.php';
 // Include the PHP code for order management
 include 'manageorderprocess.php';
 
+include('mysession.php');
+if (!session_id()) {
+
+    session_start();
+}
+
+
 // Flag to check if order details have been displayed
 $orderDetailsDisplayed = false;
 
 // Function to create a new order
+
 function createOrder($customerId, $products)
 {
-    global $con;
+    global $con, $orderDetailsDisplayed;  // Add this line
 
     // Start a transaction
     $con->begin_transaction();
@@ -54,8 +62,7 @@ function createOrder($customerId, $products)
     updateGrandTotal($orderId);
 
     // Set the flag to true
-    global $orderDetailsDisplayed;
-    $orderDetailsDisplayed = true;
+    $orderDetailsDisplayed = true;  // Change to use the global variable
 
     // Return the generated order ID
     return $orderId;
@@ -94,6 +101,8 @@ function getCustomerDetails($customerId)
 // Get product data for the dropdown
 $productQuery = "SELECT p_id, p_name FROM tb_product";
 $productResult = $con->query($productQuery);
+
+
 ?>
 
 <!DOCTYPE html>
@@ -148,56 +157,31 @@ $productResult = $con->query($productQuery);
     <!-- Navbar End -->
 
 
-    <!-- Blank Start -->
-    <div class="container-fluid pt-4 px-4">
-        <div class="row g-4">
-            <div class="col-sm-12">
-                <div class="bg-secondary rounded h-100 p-4">
-                    <h4 class="mb-4">Order Form</h4>
-                    <!-- Create Order Form -->
-                    <form method="post">
-                        <div class="mb-3">
-                            <label for="customer_id" class="form-label">Customer ID</label>
-                            <input type="text" class="form-control" id="customer_id" name="customer_id" required>
-                        </div>
-                        <div id="products-container">
-                            <div class="product-input mb-3">
-                                <label for="product_id" class="form-label">Product ID</label>
-                                <select class="form-control" name="products[0][product_id]" required>
-                                    <?php while ($row = $productResult->fetch_assoc()) : ?>
-                                        <option value="<?php echo $row['p_id']; ?>">
-                                            <?php echo $row['p_name']; ?>
-                                        </option>
-                                    <?php endwhile; ?>
-                                </select>
-                                <label for="quantity" class="form-label">Quantity</label>
-                                <input type="number" class="form-control" name="products[0][quantity]" required>
-                            </div>
-                        </div>
-                        <button type="button" class="btn btn-secondary" onclick="addProductInput()">Add
-                            Product</button>
-                        <button type="submit" class="btn btn-primary">Submit Order</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <?php
-    // Display order details only if the form has been submitted and details have not been displayed before
-    if ($_SERVER['REQUEST_METHOD'] === 'POST' && !$orderDetailsDisplayed) {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $customerId = $_POST['customer_id'];
         $products = $_POST['products'];
 
         $customerDetails = getCustomerDetails($customerId);
 
         if (!$customerDetails) {
-            echo "<p class='text-danger'>Error: Customer not found for ID #$customerId.</p>";
+            echo "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
+                <i class='fa fa-exclamation-circle me-2'></i>Error: Customer not found for ID #$customerId.
+                <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
+              </div>";
         } else {
             // Create the order
             $orderId = createOrder($customerId, $products);
 
-            // Display customer details and order information in a container
+            // Display success alert if the order is created successfully
+            if ($orderId) {
+                echo "<div class='alert alert-success alert-dismissible fade show' role='alert'>
+                    <i class='fa fa-exclamation-circle me-2'></i>Order created successfully! Check the details below.
+                    <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
+                  </div>";
+            }
+
             echo "<div class='container-fluid pt-4 px-4'>";
             echo "<div class='row g-4'>";
             echo "<div class='col-sm-12'>";
@@ -225,9 +209,46 @@ $productResult = $con->query($productQuery);
             echo "</div>";
             echo "</div>";
             echo "</div>";
+
+            $orderDetailsDisplayed = true;
         }
     }
     ?>
+
+    <!-- Blank Start -->
+    <div class="container-fluid pt-4 px-4">
+        <div class="row g-4">
+            <div class="col-sm-12">
+                <div class="bg-secondary rounded h-100 p-4">
+                    <h4 class="mb-4">Order Form</h4>
+                    <!-- Create Order Form -->
+                    <form method="post">
+                        <div class="mb-3">
+                            <label for="customer_id" class="form-label">Customer ID</label>
+                            <input type="text" class="form-control" id="customer_id" name="customer_id" required>
+                        </div>
+                        <div id="products-container">
+                            <div class="product-input mb-3">
+                                <label for="product_id" class="form-label">Product ID</label>
+                                <select class="form-control" name="products[0][product_id]" required>
+                                    <?php while ($row = $productResult->fetch_assoc()) : ?>
+                                        <option value="<?php echo $row['p_id']; ?>">
+                                            <?php echo $row['p_name']; ?>
+                                        </option>
+                                    <?php endwhile; ?>
+                                </select>
+                                <label for="quantity" class="form-label">Quantity</label>
+                                <input type="number" min="0" class="form-control" name="products[0][quantity]" required>
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-secondary" onclick="addProductInput()">Add
+                            Product</button>
+                        <button type="submit" class="btn btn-primary">Submit Order</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script>
         function addProductInput() {

@@ -11,7 +11,7 @@ include("loginprocess.php");
 </head>
 
 <body>
-    <form method="post" action="loginprocess.php">
+<form method="post" action="loginprocess.php" onsubmit="return validateForm()">
         <!-- Sign In Start -->
         <div class="container-fluid">
             <div class="row h-100 align-items-center justify-content-center" style="min-height: 100vh;">
@@ -61,5 +61,11 @@ include("loginprocess.php");
         <!-- Sign In End -->
     </form>
 </body>
+<script>
+    function validateForm() {
+        // You can add more validation logic here if needed
 
-</html>
+        // Return true to submit the form, or false to prevent submission
+        return true;
+    }
+</script>

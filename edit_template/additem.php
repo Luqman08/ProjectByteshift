@@ -59,12 +59,12 @@ include('dbcon.php');
                     <h6 class="mb-4">Add New Item</h6>
 
                     <div class="form-floating mb-3">
-                        <input type="text" name="iname" class="form-control" id="floatingInput">
+                        <input type="text" name="iname" class="form-control" id="floatingInput" required>
                         <label for="floatingInput">Item Name</label>
                     </div>
 
                     <div class="form-floating mb-3">
-                        <input type="text" name="itype" class="form-control" id="floatingInput">
+                        <input type="text" name="itype" class="form-control" id="floatingInput" required>
                         <label for="floatingInput">Item Type</label>
                     </div>
 
@@ -73,7 +73,7 @@ include('dbcon.php');
                         $sql = "SELECT * FROM item_cat";
                         $result = mysqli_query($con, $sql);
 
-                        echo '<select class="form-select" name="icat" id="floatingSelect" aria-label="Default select example">';
+                        echo '<select class="form-select" name="icat" id="floatingSelect" aria-label="Default select example"> required';
 
                         while ($row = mysqli_fetch_array($result)) {
                             echo '<option value="' . $row["cat_id"] . '">' . $row["cat_desc"] . '</option>';
@@ -86,12 +86,12 @@ include('dbcon.php');
 
 
                     <div class="form-floating mb-3">
-                        <input type="text" name="iunit" class="form-control" id="floatingInput">
+                        <input type="text" name="iunit" class="form-control" id="floatingInput required">
                         <label for="floatingInput">Item Unit</label>
                     </div>
 
                     <div class="form-floating mb-3">
-                        <input type="text" name="iprice" class="form-control" id="floatingInput">
+                        <input type="number" step="0.01" min="0" name="iprice" class="form-control" id="floatingInput" required>
                         <label for="floatingInput">Item Price</label>
                     </div>
 

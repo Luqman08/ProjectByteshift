@@ -17,21 +17,29 @@ function addProductToOrder($orderId, $productId, $quantity)
         return;
     }
 
-    // Get product price
-    $productPriceQuery = "SELECT p_price FROM tb_product WHERE p_id = $productId";
-    $result = $con->query($productPriceQuery);
+    // Get product price and available quantity
+    $productInfoQuery = "SELECT p_price, p_quantity FROM tb_product WHERE p_id = $productId";
+    $result = $con->query($productInfoQuery);
 
     if ($result && $row = $result->fetch_assoc()) {
         $price = $row['p_price'];
+        $availableQuantity = $row['p_quantity'];
+
+        // Check if the quantity is sufficient
+        if ($quantity > $availableQuantity) {
+            $_SESSION['popup_message'] = "Error: Insufficient quantity for Product #$productId. Available quantity is $availableQuantity.";
+            return;
+        }
 
         // Insert the new product into the order
         $insertProductQuery = "INSERT INTO tb_orderproduct (op_orderid, op_productid, op_quantity, op_total_price) 
-                            VALUES ($orderId, $productId, $quantity, $quantity * $price)";
+                                VALUES ($orderId, $productId, $quantity, $quantity * $price)";
         $con->query($insertProductQuery);
 
         // Update the grand total for the order
         updateGrandTotal($orderId);
 
+        // Set the success alert message
         $_SESSION['popup_message'] = "Product #$productId added to the order successfully!";
     } else {
         $_SESSION['popup_message'] = "Failed to retrieve product information for Product #$productId.";

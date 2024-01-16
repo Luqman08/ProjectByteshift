@@ -90,25 +90,25 @@ include 'header.php';
                     <div class="form-group">
                         <label for="exampleInputPassword1" class="form-label mt-4">Unit Price</label>
                         <?php
-                        echo '<input type="text" value="' . $rowr['p_price'] . '" name="funitprice" class="form-control" id="exampleInputPassword1" required>';
+                        echo '<input type="number" step="0.01" min="0" value="' . $rowr['p_price'] . '" name="funitprice" class="form-control" id="exampleInputPassword1" required>';
                         ?>
                     </div>
                     <div class="form-group">
                         <label for="exampleInputPassword1" class="form-label mt-4">Quantity</label>
                         <?php
-                        echo '<input type="text" value="' . $rowr['p_quantity'] . '" name="fquantity" class="form-control" id="exampleInputPassword1" required>';
+                        echo '<input type="number" min="0" value="' . $rowr['p_quantity'] . '" name="fquantity" class="form-control" id="exampleInputPassword1" required>';
                         ?>
                     </div>
                     <div class="form-group">
                         <label for="exampleInputPassword1" class="form-label mt-4">Minimum</label>
                         <?php
-                        echo '<input type="text" value="' . $rowr['p_minimum'] . '" name="fminimum" class="form-control" id="exampleInputPassword1" required>';
+                        echo '<input type="number" min="0" value="' . $rowr['p_minimum'] . '" name="fminimum" class="form-control" id="exampleInputPassword1" required>';
                         ?>
                     </div>
                     <div class="form-group">
                         <label for="exampleInputPassword1" class="form-label mt-4">Markup Percentage (%)</label>
                         <?php
-                        echo '<input type="text" value="' . $rowr['p_markup'] . '" name="fmarkup" class="form-control" id="exampleInputPassword1" required>';
+                        echo '<input type="number" step="0.01" max="1" value="' . $rowr['p_markup'] . '" name="fmarkup" class="form-control" id="exampleInputPassword1" required>';
                         ?>
                     </div>
 
