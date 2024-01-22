@@ -249,7 +249,7 @@ if (isset($_SESSION['duplicateOrder'])) {
     var itemData = <?php echo json_encode($dataArray); ?>;
 
     document.addEventListener('DOMContentLoaded', function() {
-       
+
         // Initial call to populate item types for the first item field
         updateItemTypes(document.querySelector('[name="ocname[]"]'));
     });

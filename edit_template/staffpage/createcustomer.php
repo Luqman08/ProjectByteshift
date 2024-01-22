@@ -8,7 +8,7 @@ include 'header.php';
 include('dbcon.php');
 
 // Function to create a new customer
-function createCustomer($customerId, $customerName, $customerEmail, $customerPhone)
+function createCustomer($customerId, $customerName, $customerEmail, $customerPhone, $customerAddress)
 {
     global $con;
 
@@ -20,7 +20,8 @@ function createCustomer($customerId, $customerName, $customerEmail, $customerPho
     }
 
     // Insert customer details into tb_customer
-    $insertCustomerQuery = "INSERT INTO tb_customer (c_id, c_name, c_email, c_phone) VALUES ('$customerId', '$customerName', '$customerEmail', '$customerPhone')";
+    $insertCustomerQuery = "INSERT INTO tb_customer (c_id, c_name, c_email, c_phone, c_address) 
+                            VALUES ('$customerId', '$customerName', '$customerEmail', '$customerPhone', '$customerAddress')";
 
     if ($con->query($insertCustomerQuery)) {
         // Display a pop-up alert with success message
@@ -54,9 +55,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $customerName = $_POST['customer_name'];
     $customerEmail = $_POST['customer_email'];
     $customerPhone = $_POST['customer_phone'];
+    $customerAddress = $_POST['customer_address']; // New field
 
     // Create the customer
-    createCustomer($customerId, $customerName, $customerEmail, $customerPhone);
+    createCustomer($customerId, $customerName, $customerEmail, $customerPhone, $customerAddress);
 }
 ?>
 
@@ -69,12 +71,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <div class="sidebar pe-4 pb-3">
     <nav class="navbar bg-secondary navbar-dark">
         <a href="index.html" class="navbar-brand mx-4 mb-3">
-            <h3 class="text-primary"><img src="img/Removal-612.png" alt="" style="width: 60px; height: 60px;">&nbspACAMS</h3>
+            <h3 class="text-primary"><img src="img/Removal-612.png" alt="" style="width: 60px; height: 60px;">&nbspACAMS
+            </h3>
         </a>
         <div class="navbar-nav w-100">
-           
+            <a href="report.php" class="nav-item nav-link"><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
+            <a href="cons.php" class="nav-item nav-link"><i class="fa fa-laptop me2"></i>Construction</a>
             <div class="nav-item dropdown">
-                <a href="manageorder.php" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown"><i class="fa fa-laptop me-2"></i>Advertisment</a>
+                <a href="manageorder.php" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown"><i
+                        class="fa fa-laptop me-2"></i>Advertisment</a>
                 <div class="dropdown-menu bg-transparent border-0">
                     <a href="manageorder.php" class="dropdown-item">Manage Order</a>
                     <a href="createcustomer.php" class="dropdown-item">Create Customer</a>
@@ -85,7 +90,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <a href="paymentstatus.php" class="dropdown-item">Payment Status</a>
                 </div>
             </div>
-            <a href="quotationlistAdv.php" class="nav-item nav-link"><i class="fa fa-laptop me2"></i>Ads Quotation</a>
+            <div class="nav-item dropdown">
+                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i
+                        class="fa fa-laptop me-2"></i>Quotation</a>
+                <div class="dropdown-menu bg-transparent border-0">
+                    <a href="quotationlistAdv.php" class="dropdown-item">Advertisement</a>
+                    <a href="quotationlistCons.php" class="dropdown-item">Construction</a>
+                </div>
+            </div>
+            <a href="inventoryList.php" class="nav-item nav-link"><i class="fa fa-laptop me2"></i>Ads Inventory</a>
+            <a href="managestaff.php" class="nav-item nav-link"><i class="fa fa-laptop me2"></i>Manage Staff</a>
         </div>
     </nav>
 </div>
@@ -103,7 +117,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <form method="post">
                         <div class="mb-3">
                             <label for="customer_id" class="form-label">Customer ID</label>
-                            <input type="number" min="0" class="form-control" id="customer_id" name="customer_id" required>
+                            <input type="number" min="0" class="form-control" id="customer_id" name="customer_id"
+                                required>
                         </div>
                         <div class="mb-3">
                             <label for="customer_name" class="form-label">Customer Name</label>
@@ -117,12 +132,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <label for="customer_phone" class="form-label">Customer Phone</label>
                             <input type="tel" class="form-control" id="customer_phone" name="customer_phone" required>
                         </div>
+                        <div class="mb-3">
+                            <label for="customer_address" class="form-label">Customer Address</label>
+                            <input type="text" class="form-control" id="customer_address" name="customer_address"
+                                required>
+                        </div>
                         <button type="submit" class="btn btn-primary">Create Customer</button>
                     </form>
                 </div>
             </div>
         </div>
-    </div>
     </div>
 </body>
 <!-- Blank End -->
